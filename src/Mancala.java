@@ -1,16 +1,17 @@
 import java.util.Scanner;
+
 public class Mancala {
     static int currentPlayer;
     static int selectedPit;
 
-    public void runGame(){
+    public void runGame() {
 
         Scanner sc = new Scanner(System.in);
-        System.out.println("The game");
+
         Board newBoard = new Board();
         int[] board = newBoard.getBoard();
 
-        currentPlayer = 1;
+        currentPlayer = (!(Math.random() <= 0.5)) ? 2 : 1;
 
         boolean check = true;
 
@@ -32,6 +33,7 @@ public class Mancala {
 
         }
 
+        newBoard.displayBoard(board);
 
     }
 
@@ -46,6 +48,7 @@ public class Mancala {
             System.out.println("Invalid pit number. Try again.");
             validateSelection(sc, board);
         }
+
         // Check if the selected pit belongs to the current player
         if (currentPlayer == 1 && selectedPit > 5) {
             System.out.println("Invalid pit. Try again.");
@@ -63,7 +66,7 @@ public class Mancala {
 
     }
 
-    public static void distributeStones(int[] board) {
+    public void distributeStones(int[] board) {
         // Distribute the seeds from the selected pit
         int seeds = board[selectedPit];
         board[selectedPit] = 0;
@@ -78,6 +81,19 @@ public class Mancala {
             }
             i++;
         }
+        // Pick up stones from last pit if not empty and distribute again and if not players Mancala
+        // else if checking if last pit was empty ie. board[i-1] > 1
+        if((currentPlayer == 1 && (i-1) == 6) || (currentPlayer == 2 && (i-1) == 13)){
+            System.out.println("Mancala " + (i-1) + " last pit");
+            System.out.println("Player " + currentPlayer + " has another turn!");
+            // Switch to the next player
+            currentPlayer = (currentPlayer == 1) ? 2 : 1;
+        }else if (board[i-1] > 1){
+            System.out.println("Last pit number: " + (i-1) + " and pit contains: " + board[i-1] + " stones.");
+            selectedPit = (i-1);
+            distributeStones(board);
+        }
+
     }
 
     public static boolean checkGameStatus(int[] board) {
@@ -92,11 +108,11 @@ public class Mancala {
             p2Seeds += board[i];
         }
         if (p1Seeds == 0 || p2Seeds == 0) {
-            System.out.println("Player 1: " + board[6] + " seeds");
-            System.out.println("Player 2: " + board[13] + " seeds");
-            if (board[6] > board[13]) {
+            System.out.println("Player 1: " + (board[6] + p1Seeds) + " seeds");
+            System.out.println("Player 2: " + (board[13] + p2Seeds) + " seeds");
+            if (board[6] + p1Seeds > board[13] + p2Seeds) {
                 System.out.println("Player 1 wins!");
-            } else if (board[6] < board[13]) {
+            } else if (board[6] + p1Seeds < board[13] + p2Seeds) {
                 System.out.println("Player 2 wins!");
             } else {
                 System.out.println("It's a draw!");

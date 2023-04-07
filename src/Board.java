@@ -1,6 +1,9 @@
 public class Board {
-    final private int FOUR_STONES = 1;
-    final private int[] board = {FOUR_STONES, FOUR_STONES, FOUR_STONES, FOUR_STONES, FOUR_STONES, FOUR_STONES, 0, FOUR_STONES, FOUR_STONES, FOUR_STONES, FOUR_STONES, FOUR_STONES, FOUR_STONES, 0};
+    final private int FOUR_STONES = 4;
+    final private int[] board = {
+            FOUR_STONES, FOUR_STONES, FOUR_STONES, FOUR_STONES, FOUR_STONES, FOUR_STONES, 0,
+            FOUR_STONES, FOUR_STONES, FOUR_STONES, FOUR_STONES, FOUR_STONES, FOUR_STONES, 0
+    };
     public int[] getBoard() {
         return board;
     }
